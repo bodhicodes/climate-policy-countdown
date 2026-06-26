@@ -75,14 +75,202 @@ Fact-check these specific claims. For each one, answer TRUE or FALSE and give th
 No commentary. Just the five answers with corrections where needed.
 ```
 
-## Milestone ideas
+## Filled-in Research Prompts
 
-Need more milestones? Here are categories to research:
+Ready-to-paste prompts for the five milestones used in the live build.
 
-- **Past:** $100B climate finance goal, COP26 methane pledge, Kyoto Protocol targets
-- **Now:** EU CBAM, US Paris withdrawal, China ETS expansion, deforestation commitments
-- **Crunch (2028-2030):** 43% emissions reduction target, next round of NDCs, coal phase-out pledges
-- **Beyond 2030:** Global net-zero 2050, aviation net-zero 2050, shipping decarbonization
+### 1. EU CBAM (done live)
+
+```
+I need verified, sourced data on the EU Carbon Border Adjustment Mechanism (CBAM) mandatory phase that started January 1, 2026.
+
+Research this and give me the output as a single JSON code block matching this exact TypeScript type:
+
+{
+  id: string,
+  era: "past" | "now" | "crunch" | "beyond",
+  title: string,
+  description: string (one sentence),
+  summary: string (2-3 sentences, factual, no hedging),
+  insight: string (one sharp sentence a policy analyst would say),
+  date: string (ISO format),
+  status: "met" | "at_risk" | "missed" | "upcoming",
+  category: "ndc" | "cop" | "paris" | "eu_policy" | "us_policy" | "sector",
+  region: "global" | "eu" | "us" | "uk" | "canada" | "china",
+  source: { label: string, url: string },
+  stats: [
+    { label: string, value: string, context: string, progress: number | null }
+  ]
+}
+
+For this milestone use:
+- id: "eu-cbam-2026"
+- era: "now"
+- status: "met"
+- category: "eu_policy"
+- region: "eu"
+- Include exactly 3 stats with specific numbers (sectors covered, certificate price range, trade impact)
+- progress should be null for all stats since these aren't percentage-based
+- The source URL should be the official European Commission CBAM page
+
+Output ONLY the JSON code block. No commentary before or after.
+```
+
+### 2. $100B Climate Finance Goal
+
+```
+I need verified, sourced data on the $100 billion per year climate finance goal that developed countries committed to at COP15 in 2009, with a 2020 deadline.
+
+Research this and give me the output as a single JSON code block matching this exact TypeScript type:
+
+{
+  id: string,
+  era: "past" | "now" | "crunch" | "beyond",
+  title: string,
+  description: string (one sentence),
+  summary: string (2-3 sentences, factual, no hedging),
+  insight: string (one sharp sentence a policy analyst would say),
+  date: string (ISO format),
+  status: "met" | "at_risk" | "missed" | "upcoming",
+  category: "ndc" | "cop" | "paris" | "eu_policy" | "us_policy" | "sector",
+  region: "global" | "eu" | "us" | "uk" | "canada" | "china",
+  source: { label: string, url: string },
+  stats: [
+    { label: string, value: string, context: string, progress: number | null }
+  ]
+}
+
+For this milestone use:
+- id: "climate-finance-100b"
+- era: "past"
+- status: "at_risk"
+- category: "paris"
+- region: "global"
+- Include exactly 3 stats with specific numbers (year goal was first met, latest annual figure, new 2035 goal amount)
+- progress should be null for all stats
+- The source URL should be the OECD climate finance tracking page or UNFCCC Standing Committee on Finance
+
+Output ONLY the JSON code block. No commentary before or after.
+```
+
+### 3. US Paris Agreement Withdrawal
+
+```
+I need verified, sourced data on the United States withdrawal from the Paris Agreement under the second Trump administration in 2025.
+
+Research this and give me the output as a single JSON code block matching this exact TypeScript type:
+
+{
+  id: string,
+  era: "past" | "now" | "crunch" | "beyond",
+  title: string,
+  description: string (one sentence),
+  summary: string (2-3 sentences, factual, no hedging),
+  insight: string (one sharp sentence a policy analyst would say),
+  date: string (ISO format),
+  status: "met" | "at_risk" | "missed" | "upcoming",
+  category: "ndc" | "cop" | "paris" | "eu_policy" | "us_policy" | "sector",
+  region: "global" | "eu" | "us" | "uk" | "canada" | "china",
+  source: { label: string, url: string },
+  stats: [
+    { label: string, value: string, context: string, progress: number | null }
+  ]
+}
+
+For this milestone use:
+- id: "us-paris-withdrawal-2026"
+- era: "now"
+- status: "missed"
+- category: "us_policy"
+- region: "us"
+- Include exactly 3 stats with specific numbers (US share of global emissions, number of countries still in the agreement, US emissions trend)
+- progress should be null for all stats
+- The source URL should be the UNFCCC Paris Agreement page or US State Department
+
+Output ONLY the JSON code block. No commentary before or after.
+```
+
+### 4. 43% Global Emissions Reduction by 2030
+
+```
+I need verified, sourced data on the IPCC target of 43% reduction in global greenhouse gas emissions from 2019 levels by 2030 to maintain a 1.5°C pathway.
+
+Research this and give me the output as a single JSON code block matching this exact TypeScript type:
+
+{
+  id: string,
+  era: "past" | "now" | "crunch" | "beyond",
+  title: string,
+  description: string (one sentence),
+  summary: string (2-3 sentences, factual, no hedging),
+  insight: string (one sharp sentence a policy analyst would say),
+  date: string (ISO format),
+  status: "met" | "at_risk" | "missed" | "upcoming",
+  category: "ndc" | "cop" | "paris" | "eu_policy" | "us_policy" | "sector",
+  region: "global" | "eu" | "us" | "uk" | "canada" | "china",
+  source: { label: string, url: string },
+  stats: [
+    { label: string, value: string, context: string, progress: number | null }
+  ]
+}
+
+For this milestone use:
+- id: "global-reduction-2030"
+- era: "crunch"
+- status: "upcoming"
+- category: "paris"
+- region: "global"
+- Include exactly 3 stats with specific numbers (current global emissions GtCO2e, required 2030 level, emissions gap)
+- progress should be null for all stats
+- The source URL should be the IPCC AR6 Synthesis Report or UNEP Emissions Gap Report
+
+Output ONLY the JSON code block. No commentary before or after.
+```
+
+### 5. Global Net-Zero 2050
+
+```
+I need verified, sourced data on the global net-zero greenhouse gas emissions by 2050 target, as established by the IPCC and adopted through national pledges.
+
+Research this and give me the output as a single JSON code block matching this exact TypeScript type:
+
+{
+  id: string,
+  era: "past" | "now" | "crunch" | "beyond",
+  title: string,
+  description: string (one sentence),
+  summary: string (2-3 sentences, factual, no hedging),
+  insight: string (one sharp sentence a policy analyst would say),
+  date: string (ISO format),
+  status: "met" | "at_risk" | "missed" | "upcoming",
+  category: "ndc" | "cop" | "paris" | "eu_policy" | "us_policy" | "sector",
+  region: "global" | "eu" | "us" | "uk" | "canada" | "china",
+  source: { label: string, url: string },
+  stats: [
+    { label: string, value: string, context: string, progress: number | null }
+  ]
+}
+
+For this milestone use:
+- id: "global-net-zero-2050"
+- era: "beyond"
+- status: "upcoming"
+- category: "paris"
+- region: "global"
+- Include exactly 3 stats with specific numbers (countries with net-zero pledges, percentage with legislation, share of global GDP covered)
+- progress should be null for all stats
+- The source URL should be the Net Zero Tracker or UNFCCC Net-Zero Coalition page
+
+Output ONLY the JSON code block. No commentary before or after.
+```
+
+## Correction Prompt
+
+When verification catches a bad claim, use this to get corrected JSON without breaking the data model:
+
+```
+Fix claim [N] based on the fact-check. Replace the [description of bad stat] with a verified stat about [topic] — use [suggest 2-3 alternative stat ideas]. Keep the same JSON structure. Output the corrected full JSON block.
+```
 
 ---
 
