@@ -40,4 +40,4 @@ Next.js 14, Tailwind CSS, TypeScript, d3 (d3-scale, d3-shape)
 - [Terra Studio](https://studio.terra.do) — AI intensive for climate professionals
 - [Free courses](https://studio.terra.do/free-courses)
 - [6-week intensive](https://studio.terra.do/intensive)
-- [Project 3rd Rock](https://www.project3rdrock.com/) — the reference build
+- [Project 3rd Rock](https://www.project3rdrock.com/)
