@@ -1,0 +1,89 @@
+# Perplexity Prompts
+
+Two prompt templates for researching and verifying climate policy milestones. Use these with Perplexity (or any research-capable AI).
+
+## Research + Structure
+
+This prompt gives Perplexity your data model and asks it to research and structure the data in one step. Fill in the bracketed fields for each milestone you research.
+
+```
+I need verified, sourced data on [MILESTONE NAME AND DATE].
+
+Research this and give me the output as a single JSON code block matching this exact TypeScript type:
+
+{
+  id: string,
+  era: "past" | "now" | "crunch" | "beyond",
+  title: string,
+  description: string (one sentence),
+  summary: string (2-3 sentences, factual, no hedging),
+  insight: string (one sharp sentence a policy analyst would say),
+  date: string (ISO format),
+  status: "met" | "at_risk" | "missed" | "upcoming",
+  category: "ndc" | "cop" | "paris" | "eu_policy" | "us_policy" | "sector",
+  region: "global" | "eu" | "us" | "uk" | "canada" | "china",
+  source: { label: string, url: string },
+  stats: [
+    { label: string, value: string, context: string, progress: number | null }
+  ]
+}
+
+For this milestone use:
+- id: "[KEBAB-CASE-ID]"
+- era: "[past/now/crunch/beyond]"
+- status: "[met/at_risk/missed/upcoming]"
+- category: "[CATEGORY]"
+- region: "[REGION]"
+- Include exactly 3 stats with specific numbers
+- progress should be null for all stats unless they represent a percentage completion
+- The source URL should be the most authoritative official source
+
+Output ONLY the JSON code block. No commentary before or after.
+```
+
+**Key principle:** The editorial decisions (id, era, status, category, region) are yours. The research is the stats, summary, and insight. The type definition in the prompt constrains the output to exactly what you need.
+
+## Verification
+
+After you get the research back, verify the specific claims. Pull the numbers from the response and paste them in.
+
+```
+Fact-check these specific claims from a climate policy tracker. For each one, answer TRUE or FALSE and give the correct value with a source URL if false.
+
+1. [Paste the date claim]. TRUE/FALSE?
+2. [Paste stat 1 — exact number and what it measures]. TRUE/FALSE?
+3. [Paste stat 2]. TRUE/FALSE?
+4. [Paste stat 3]. TRUE/FALSE?
+5. [Paste the source URL] — does this URL resolve and is it the best official source? TRUE/FALSE?
+
+No commentary. Just the five answers with corrections where needed.
+```
+
+## Example: EU CBAM
+
+Here's a filled-in verification prompt for the EU Carbon Border Adjustment Mechanism:
+
+```
+Fact-check these specific claims. For each one, answer TRUE or FALSE and give the correct value with a source URL if false.
+
+1. The EU CBAM definitive phase started on January 1, 2026. TRUE/FALSE?
+2. CBAM covers exactly 6 sectors: cement, aluminium, fertilisers, iron and steel, hydrogen, and electricity. TRUE/FALSE?
+3. The Q1 2026 CBAM certificate price was €75.36 per tonne, calculated from EU ETS auction clearing prices. TRUE/FALSE?
+4. Russia filed 1 formal WTO dispute against CBAM in May 2025, and the EU declined consultations. TRUE/FALSE?
+5. This is the correct official source: https://taxation-customs.ec.europa.eu/carbon-border-adjustment-mechanism_en — TRUE/FALSE?
+
+No commentary. Just the five answers with corrections where needed.
+```
+
+## Milestone ideas
+
+Need more milestones? Here are categories to research:
+
+- **Past:** $100B climate finance goal, COP26 methane pledge, Kyoto Protocol targets
+- **Now:** EU CBAM, US Paris withdrawal, China ETS expansion, deforestation commitments
+- **Crunch (2028-2030):** 43% emissions reduction target, next round of NDCs, coal phase-out pledges
+- **Beyond 2030:** Global net-zero 2050, aviation net-zero 2050, shipping decarbonization
+
+---
+
+*The research → structure → verify loop takes about 5 minutes per milestone. The type definition in the prompt does most of the work — it constrains the AI to give you exactly the shape your app needs.*

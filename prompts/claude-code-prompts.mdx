@@ -1,0 +1,244 @@
+# Claude Code Prompts
+
+Prompts for building each component with Claude Code (in VS Code terminal). Run these after you have your Claude Design output and your milestone data.
+
+## 1. Data Model
+
+```
+Create src/data/types.ts with the following TypeScript interfaces:
+
+MilestoneSource: label (string), url (string)
+MilestoneStat: label (string), value (string), context (string), progress (number | null — 0-100 for bar fill, null means no bar)
+Milestone: id, title, description (all string), summary (optional string), insight (optional string), date (string, ISO), status ("met" | "at_risk" | "missed" | "upcoming"), category (string), region (string), era (optional "past" | "now" | "crunch" | "beyond"), stats (optional MilestoneStat array), source (optional MilestoneSource)
+
+Also create src/data/milestones.json as an empty array [].
+```
+
+## 2. Design System Setup
+
+Run this after Claude Design gives you the design system output.
+
+```
+Read the design system files in the design/ folder. Use those design tokens to set up the project:
+
+1. Update tailwind.config.ts with the colors from the design system: cpc-lime (#c5e84d), status colors (emerald for met, amber for at_risk, red for missed, lime for upcoming), surface and border colors. Add font families: font-display (Space Grotesk) and font-body (Geist).
+
+2. Update src/app/globals.css: black background, CSS variables for --background and --foreground.
+
+3. Update src/app/layout.tsx: import Space Grotesk from next/font/google and Geist from next/font/local (the woff files are in src/app/fonts/). Apply dark body classes. Set metadata title to "Climate Policy Countdown".
+
+Use pure Tailwind classes everywhere. No rounded corners. Borders at white/[0.07] to white/[0.1]. Follow the spacing scale and typography hierarchy from the design system.
+```
+
+## 3. CountdownHero
+
+```
+Reference the component designs in the design/ folder. Build a CountdownHero React component in src/components/countdown/hero.tsx.
+
+It receives the full milestones array as a prop.
+
+Three sections stacked vertically:
+
+1. Title block: An uppercase tracking-wide eyebrow "Climate Policy Countdown" in cpc-lime. Below that, a large bold heading: "2030 Global Emissions Reduction Target". Below that, one paragraph: "Global greenhouse gas emissions must decline by 43% from 2019 levels to keep a 1.5°C pathway viable. This is the timeline."
+
+2. Countdown: Days remaining until December 31, 2030. Very large number (use clamp for fluid sizing) with "days remaining" next to it in smaller text. useEffect to update hourly.
+
+3. Scorecard: 4-column grid counting milestones by status — Met (emerald-400), At Risk (amber-400), Missed (red-400), Upcoming (cpc-lime). Large number, small label below.
+
+Outer container: border border-white/[0.1], bg #080808. Border-top between each section. font-display for headings, font-body for paragraphs. "use client" directive.
+```
+
+Then wire it into the page:
+
+```
+Update src/app/page.tsx: import milestones from @/data/milestones.json and CountdownHero from @/components/countdown/hero. Render CountdownHero passing the milestones array. Keep bg-black min-h-screen text-white, center content in a max-w-5xl mx-auto container.
+```
+
+## 4. MilestoneCard
+
+```
+Reference the MilestoneCard design in the design/ folder. Build a MilestoneFeature component in src/components/countdown/milestone-feature.tsx. It takes a single Milestone as a prop (import from @/data/types).
+
+Layout:
+- Outer: bg #0a0a0a, dot-grid pattern (radial-gradient circle, rgba(255,255,255,0.022) 1px, transparent 1px, 22px), border white/[0.07]
+- Thin left accent bar (2px) colored by status
+- Padding: px-8 py-9, left padding slightly more (pl-10 lg:pl-12)
+
+Content top to bottom:
+1. Top row: status badge left (icon + label, uppercase, small, colored border/bg tinted to status), date right (month year + relative time like "6mo ago")
+2. Title: large bold white heading
+3. Summary: if exists, zinc-300, relaxed leading, max-w-3xl
+4. Stats grid: if stats exist, 3-column grid with border-top separator. Each stat: label (small uppercase zinc-400), value (large bold white), context (small zinc-400). If progress is not null, show a thin progress bar.
+5. Insight callout: if exists, left-bordered blockquote, border colored by status accent
+6. Bottom row: category + region as small uppercase bordered tags, source link on right with arrow
+
+Create a statusConfig object mapping each status to: label, text color, bg, border, node color (hex), icon character. Include met, at_risk, missed, upcoming.
+
+Also create a StatBlock component in src/components/countdown/stat-block.tsx for the individual stat display.
+```
+
+Then wire it:
+
+```
+Update page.tsx to also import MilestoneFeature. After the hero, render each milestone from the array as a MilestoneFeature card. Add some vertical spacing between them (space-y-6 or gap-6).
+```
+
+## 5. Era Sections
+
+```
+Build an EraSection component in src/components/countdown/era-section.tsx. It takes an era string and an array of Milestones.
+
+Create an era config object that maps each era to a display label and descriptor:
+- past → "The Record" / "Commitments already tested"
+- now → "Live Now" / "Playing out in real time"
+- crunch → "The Crunch" / "The make-or-break years"
+- beyond → "Beyond 2030" / "The long game"
+
+The section has an era header (label large, descriptor smaller muted) and renders MilestoneFeature for each milestone.
+
+Then update page.tsx: sort milestones by date, group by era (past → now → crunch → beyond), render CountdownHero then each EraSection. Remove the flat card list.
+```
+
+## 6. Charts
+
+Five charts, each built in two prompts (create, then refine). All go in `src/components/countdown/charts/`.
+
+### Chart 1: Climate Finance (ScenarioBar)
+
+**Create:**
+```
+Build a ScenarioBar chart component in src/components/countdown/charts/scenario-bar.tsx.
+
+Props: bars (array of {label, value, color, annotation?, dimmed?}), yMax (number), yLabel (string), caption (string).
+
+It renders vertical bars as SVG using d3-scale (scaleBand for x, scaleLinear for y). Each bar has:
+- A colored rect (use the bar's color prop)
+- An annotation label above the bar (the bar's annotation string, or value if no annotation)
+- A label below the bar
+- If dimmed is true, fill the bar with rgba(255,255,255,0.07) instead of the color
+
+Add y-axis gridlines and tick labels on the left. X-axis labels below. SVG viewBox, responsive width with maxWidth 440px. "use client". font-family uses var(--font-space-grotesk). yLabel renders above the chart in cpc-lime uppercase tracking-widest text-sm. Caption below in text-sm text-zinc-400.
+
+Then wire it to the climate-finance-100b milestone in milestone-feature.tsx. Add it after the stats grid, before the insight callout. Render conditionally when milestone.id === "climate-finance-100b" with these bars:
+- { label: "$100B goal", value: 100, color: "#71717a", annotation: "$100B", dimmed: true }
+- { label: "2022 actual", value: 115.9, color: "#34d399", annotation: "$115.9B" }
+- { label: "2024 actual", value: 136.7, color: "#34d399", annotation: "$136.7B" }
+- { label: "2035 goal", value: 300, color: "#60a5fa", annotation: "$300B", dimmed: true }
+yMax: 340, yLabel: "Climate finance — USD billion / year", caption: "The $100B goal was met three years late, then exceeded."
+```
+
+**Refine:**
+```
+Update the climate finance ScenarioBar caption to: "The $100B goal was met three years late, then exceeded. The new bar is $300B/year by 2035." Also make the dimmed bar annotations use zinc-500 text color instead of the bar's color, so they read as targets not actuals.
+```
+
+### Chart 2: EU CBAM (ScenarioBar)
+
+**Create:**
+```
+Add another ScenarioBar instance in milestone-feature.tsx for the eu-cbam-2026 milestone. This one compares carbon prices across markets:
+
+- { label: "Q1 2026 price", value: 75.36, color: "#60a5fa", annotation: "€75.36/t" }
+- { label: "EU ETS avg 2025", value: 65, color: "#fbbf24", annotation: "~€65/t" }
+- { label: "China ETS", value: 12, color: "#f87171", annotation: "~€12/t" }
+
+yMax: 100, yLabel: "Carbon price — EUR per tonne CO₂"
+
+No caption for now. Render conditionally when milestone.id === "eu-cbam-2026", same position as the other chart (after stats, before insight).
+```
+
+**Refine:**
+```
+Add a caption to the EU CBAM ScenarioBar: "CBAM certificates track EU ETS prices. The gap between EU and Chinese carbon prices shows why border adjustment matters." The China bar is quite small — that's the point, keep it as is.
+```
+
+### Chart 3: US Paris Withdrawal (WaffleChart)
+
+**Create:**
+```
+Build a WaffleChart component in src/components/countdown/charts/waffle.tsx.
+
+Props: filled (number 0-100), filledColor (string), filledLabel (string), emptyLabel (string), caption? (string).
+
+It renders a 10x10 grid of small squares as pure SVG (no d3 needed). The first N squares (where N = filled) use filledColor. The remaining squares use rgba(255,255,255,0.07). Cell size 13px, gap 3px. SVG viewBox sized to fit, rendered at 160x160px.
+
+Below the grid, a legend row with two items: a small colored square + filledLabel, and a small empty square + emptyLabel. Both in font-display text-sm uppercase tracking-wider.
+
+Below that, the caption in text-sm text-zinc-400 max-w-xs.
+
+"use client".
+
+Wire it to the us-paris-withdrawal-2026 milestone in milestone-feature.tsx:
+- filled: 14
+- filledColor: "#f87171"
+- filledLabel: "~14% US share (no federal mandate)"
+- emptyLabel: "86% rest of world"
+
+No caption yet.
+```
+
+**Refine:**
+```
+Add a caption to the US Paris WaffleChart: "Each square = 1% of global GHG emissions. The US withdrawal removes federal climate governance over 14% of the world's emissions."
+```
+
+### Chart 4: 43% Emissions Reduction (EmissionsGap)
+
+**Create:**
+```
+Build an EmissionsGapChart component in src/components/countdown/charts/emissions-gap.tsx. This is a line chart showing historical emissions vs projections. "use client".
+
+Data (hardcoded in the component):
+- HISTORICAL: [2015, 52.4], [2016, 52.8], [2017, 53.4], [2018, 55.2], [2019, 57.4], [2020, 53.0], [2021, 56.0], [2022, 56.8], [2023, 57.1]
+- CURRENT_POLICIES projection: from [2023, 57.1] to [2030, ~56 Gt] (57.4 * 0.98)
+- 1.5°C PATHWAY projection: from [2023, 57.1] to [2030, 32.7 Gt] (57.4 * 0.57)
+
+Use d3-scale (scaleLinear) for x (2015-2030) and y (28-64) axes. Use d3-shape (line) to generate SVG paths.
+
+Render as SVG with viewBox, responsive width 100%:
+- Y-axis gridlines at [35, 40, 45, 50, 55, 60] with tick labels
+- X-axis labels at [2015, 2020, 2025, 2030]
+- Historical line: solid white, strokeWidth 1.75
+- Current policies: dashed amber (#fbbf24), strokeWidth 1.5
+- 1.5°C pathway: solid cpc-lime (#c5e84d), strokeWidth 1.75
+- A vertical dashed line at 2023 labeled "projections →"
+- Endpoint dots on both projection lines
+- Labels at endpoints: "~56 Gt / current" in amber, "32.7 Gt / 1.5°C path" in lime
+
+Below the SVG, a legend row with three items showing line styles: Historical (white solid), Current policies (amber dashed), 1.5°C pathway (lime solid). Use font-display text-sm uppercase tracking-wider.
+
+Above the chart, a title: "Global GHG Emissions — GtCO₂e" in cpc-lime uppercase.
+
+Wire it to global-reduction-2030 in milestone-feature.tsx. No props needed, it's self-contained.
+```
+
+**Refine:**
+```
+Two changes to the EmissionsGapChart:
+
+1. Add a shaded polygon between the current policies line and the 1.5°C pathway line — a triangle from the 2023 split point to both 2030 endpoints. Fill it with rgba(248,113,113,0.1) (subtle red tint) to visually show the emissions gap.
+
+2. Add an annotation callout on the historical line's last point (2023, 57.1): a small leader line pointing up-right, with text "57.1 Gt record (2023)" in zinc-300 text.
+```
+
+### Chart 5: Net-Zero 2050 (WaffleChart)
+
+**Create:**
+```
+Add another WaffleChart instance in milestone-feature.tsx for the global-net-zero-2050 milestone:
+- filled: 23
+- filledColor: "#34d399" (emerald)
+- filledLabel: "~23% backed by legislation"
+- emptyLabel: "~77% pledges only"
+
+No caption yet. Same conditional rendering pattern as the US Paris waffle.
+```
+
+**Refine:**
+```
+Add a caption to the net-zero WaffleChart: "Each square = 1% of the 150+ countries with net-zero commitments. Fewer than 1 in 4 have enshrined the pledge in law."
+```
+
+---
+
+*These prompts were used during the [Terra Studio](https://studio.terra.do) live build event. Each prompt describes layout structurally (numbered sections, top to bottom) rather than visually. The more specific the prompt, the less iteration you need.*

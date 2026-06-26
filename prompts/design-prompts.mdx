@@ -1,0 +1,83 @@
+# Claude Design Prompts
+
+Three iterative prompts to generate your design system, component designs, and full page composition. Send each one as a separate message — each builds on the previous output.
+
+## Prompt 1: Design System
+
+```
+I'm building a climate policy countdown tracker — a single-page Next.js app with pure Tailwind CSS. Dark theme, sharp edges, data-heavy.
+
+Before we design any components, give me a foundational design system I can build on:
+
+- Color palette: background (black to near-black), surface/card color, border color, text hierarchy (primary white, secondary, muted). One accent: lime/chartreuse (#c5e84d). Four status colors: emerald (met), amber (at risk), red (missed), lime (upcoming).
+- Typography: Space Grotesk for display/headings, Geist for body. Scale from page title down to labels. Minimum text size is text-sm (14px) — nothing smaller. No opacity tricks on text, just distinct color values for readability.
+- Spacing: a consistent scale for padding, gaps, section spacing.
+- Borders: white at low opacity (7-10%). No rounded corners anywhere.
+- Buttons and badges: status badges, category tags, source links.
+
+Keep it tight. This is the foundation — I'll ask for components next.
+```
+
+## Prompt 2: Components
+
+Send this after Claude Design returns the design system. Paste the Milestone interface from `src/data/types.ts` where indicated.
+
+```
+Great. Now here's the data model these components will render:
+
+interface Milestone {
+  id: string;
+  title: string;
+  summary?: string;
+  insight?: string;
+  date: string;
+  status: "met" | "at_risk" | "missed" | "upcoming";
+  category: string;
+  region: string;
+  era?: "past" | "now" | "crunch" | "beyond";
+  stats?: { label: string; value: string; context: string; progress: number | null }[];
+  source?: { label: string; url: string };
+}
+
+Using the design system you just made, design these components:
+
+1. CountdownHero — large countdown number (days to Dec 31 2030), subtitle text, and a 4-cell scorecard grid showing the count of each status (met/at_risk/missed/upcoming). Each cell uses its status color.
+
+2. MilestoneCard — status badge (icon + label), title, date + relative time, summary paragraph, a 3-column stats grid (label small uppercase, value large bold, context small muted), an insight callout with a left border accent, and a footer row with category + region tags and a source link.
+
+3. EraSection — a section header that labels the era (past / now / crunch / beyond) with a short descriptor. Contains a stack of MilestoneCards.
+
+Use the design system tokens. These will go to Claude Code as React + Tailwind components, so think in terms of utility classes and component structure.
+```
+
+## Prompt 3: Page Composition
+
+Send this after the component designs are ready.
+
+```
+Now compose everything into a full page layout.
+
+The page has:
+- CountdownHero at the top
+- Then 4 EraSections stacked vertically, one per era: "The Record" (past), "Live Now" (now), "The Crunch" (crunch), "Beyond 2030" (beyond)
+- Each era has 1-2 milestone cards
+
+Show me the full page mockup with real content from this example milestone in the "now" era:
+
+Title: "EU CBAM Definitive Phase"
+Status: met
+Date: January 2026
+Stats: "Sectors covered: 6", "Q1 2026 certificate price: €75.36/t", "WTO disputes filed: 1"
+Insight: "CBAM turns carbon leakage policy into a real import cost..."
+
+Also show one "upcoming" card in the crunch era:
+Title: "43% Global Emissions Reduction"
+Status: upcoming
+Date: December 2030
+
+Use a dot-grid subtle pattern (radial-gradient, ~22px) on card backgrounds. Page background is pure black.
+```
+
+---
+
+*These prompts were used during the [Terra Studio](https://studio.terra.do) live build event. The three-layer approach (design system → components → page) mirrors how you'd set up a Tailwind config before writing JSX.*
