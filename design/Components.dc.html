@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  body { margin: 0; background: #0a0a0a; }
+  *::selection { background: #c5e84d; color: #0a0a0a; }
+</style>
+</helmet>
+
+<div style="background:#0a0a0a; color:#f5f5f5; font-family:'Geist', system-ui, sans-serif; min-height:100vh; padding: 64px 80px 120px;">
+
+  <!-- ============ DOC HEADER ============ -->
+  <header style="display:flex; justify-content:space-between; align-items:flex-end; border-bottom:1px solid rgba(255,255,255,0.08); padding-bottom: 32px; margin-bottom: 64px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:12px; margin-bottom: 16px;">
+        <div style="width:10px; height:10px; background:#c5e84d;"></div>
+        <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">v0.1 / Components</span>
+      </div>
+      <h1 style="font-family:'Space Grotesk', sans-serif; font-size:56px; font-weight:600; line-height:1; letter-spacing:-0.02em; margin:0; color:#f5f5f5;">Three components.</h1>
+      <p style="font-family:'Geist', sans-serif; font-size:18px; color:#a3a3a3; margin:16px 0 0; max-width: 640px;">CountdownHero, MilestoneCard, EraSection — rendered with the Foundations tokens, dressed in real data, and shipped with React + Tailwind prop contracts for handoff.</p>
+    </div>
+    <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; text-align:right;">
+      <div>REACT · TAILWIND</div>
+      <div style="margin-top: 4px;">SHARP / DARK / DENSE</div>
+    </div>
+  </header>
+
+  <!-- ============================================== -->
+  <!-- 01 · COUNTDOWN HERO                             -->
+  <!-- ============================================== -->
+  <section style="margin-bottom: 96px;">
+
+    <div style="display:flex; align-items:baseline; gap:16px; margin-bottom: 24px;">
+      <h2 style="font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; margin:0; letter-spacing:-0.01em;">01 · CountdownHero</h2>
+      <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">// big number to Dec 31 2030 + status scorecard</span>
+    </div>
+
+    <!-- Props snippet -->
+    <pre style="background:#131313; border:1px solid rgba(255,255,255,0.08); padding: 20px 24px; font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; line-height:1.6; margin: 0 0 32px; white-space:pre; overflow-x:auto;"><span style="color:#6b6b6b;">// CountdownHero.tsx</span>
+<span style="color:#c5e84d;">interface</span> <span style="color:#f5f5f5;">CountdownHeroProps</span> {
+  targetDate: <span style="color:#a3a3a3;">Date</span>;            <span style="color:#6b6b6b;">// 2030-12-31</span>
+  subtitle: <span style="color:#a3a3a3;">string</span>;
+  totalTracked: <span style="color:#a3a3a3;">number</span>;
+  scorecard: { met: <span style="color:#a3a3a3;">number</span>; at_risk: <span style="color:#a3a3a3;">number</span>; missed: <span style="color:#a3a3a3;">number</span>; upcoming: <span style="color:#a3a3a3;">number</span> };
+}</pre>
+
+    <!-- THE COMPONENT -->
+    <div style="border:1px solid rgba(255,255,255,0.10); background:#0a0a0a;">
+
+      <!-- Meta strip -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding: 16px 32px; border-bottom:1px solid rgba(255,255,255,0.08); font-family:'Geist Mono', monospace; font-size:14px; letter-spacing:0.08em; text-transform:uppercase;">
+        <div style="display:flex; gap: 32px;">
+          <div><span style="color:#6b6b6b;">target</span> <span style="color:#f5f5f5; margin-left: 8px;">31 dec 2030</span></div>
+          <div><span style="color:#6b6b6b;">threshold</span> <span style="color:#c5e84d; margin-left: 8px;">1.5°C · Paris Art. 4</span></div>
+        </div>
+        <div style="display:flex; align-items:center; gap: 8px; color:#a3a3a3;">
+          <span style="width:6px; height:6px; background:#c5e84d; display:inline-block; animation: none;"></span>
+          <span>tracking · live</span>
+        </div>
+      </div>
+
+      <!-- Big number -->
+      <div style="padding: 80px 32px 64px; text-align:center;">
+        <div style="font-family:'Geist Mono', monospace; font-size:220px; line-height:0.85; font-weight:500; color:#f5f5f5; letter-spacing:-0.05em; font-variant-numeric: tabular-nums;">{{ daysToTarget }}</div>
+        <div style="margin-top: 28px; display:flex; justify-content:center; gap: 20px; align-items:baseline; flex-wrap:wrap;">
+          <span style="font-family:'Space Grotesk', sans-serif; font-size:24px; font-weight:500; color:#a3a3a3; letter-spacing:-0.01em;">days until the 1.5°C deadline</span>
+          <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">— 76 milestones tracked</span>
+        </div>
+      </div>
+
+      <!-- Scorecard -->
+      <div style="display:grid; grid-template-columns: repeat(4, 1fr); border-top:1px solid rgba(255,255,255,0.08);">
+        <!-- Met -->
+        <div style="padding: 28px 32px; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
+            <span style="width:8px; height:8px; background:#10b981;"></span>
+            <span style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">Met</span>
+          </div>
+          <div style="display:flex; align-items:baseline; gap: 10px;">
+            <span style="font-family:'Geist Mono', monospace; font-size:56px; color:#10b981; font-weight:500; line-height:1; letter-spacing:-0.03em;">14</span>
+            <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">/ 76</span>
+          </div>
+          <div style="margin-top: 12px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">18% of total</div>
+        </div>
+        <!-- At risk -->
+        <div style="padding: 28px 32px; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
+            <span style="width:8px; height:8px; background:#f59e0b;"></span>
+            <span style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">At risk</span>
+          </div>
+          <div style="display:flex; align-items:baseline; gap: 10px;">
+            <span style="font-family:'Geist Mono', monospace; font-size:56px; color:#f59e0b; font-weight:500; line-height:1; letter-spacing:-0.03em;">23</span>
+            <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">/ 76</span>
+          </div>
+          <div style="margin-top: 12px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">30% of total</div>
+        </div>
+        <!-- Missed -->
+        <div style="padding: 28px 32px; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
+            <span style="width:8px; height:8px; background:#ef4444;"></span>
+            <span style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">Missed</span>
+          </div>
+          <div style="display:flex; align-items:baseline; gap: 10px;">
+            <span style="font-family:'Geist Mono', monospace; font-size:56px; color:#ef4444; font-weight:500; line-height:1; letter-spacing:-0.03em;">8</span>
+            <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">/ 76</span>
+          </div>
+          <div style="margin-top: 12px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">10% of total</div>
+        </div>
+        <!-- Upcoming -->
+        <div style="padding: 28px 32px;">
+          <div style="display:flex; align-items:center; gap:10px; margin-bottom: 20px;">
+            <span style="width:8px; height:8px; background:#c5e84d;"></span>
+            <span style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">Upcoming</span>
+          </div>
+          <div style="display:flex; align-items:baseline; gap: 10px;">
+            <span style="font-family:'Geist Mono', monospace; font-size:56px; color:#c5e84d; font-weight:500; line-height:1; letter-spacing:-0.03em;">31</span>
+            <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">/ 76</span>
+          </div>
+          <div style="margin-top: 12px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">42% of total</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div style="margin-top: 16px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; display:flex; gap: 32px;">
+      <span>// container · <span style="color:#a3a3a3;">border border-white/10 bg-neutral-950</span></span>
+      <span>// number · <span style="color:#a3a3a3;">text-[220px] font-mono tabular-nums tracking-[-0.05em]</span></span>
+      <span>// updates · <span style="color:#a3a3a3;">recomputed on mount + 1 min interval</span></span>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 02 · MILESTONE CARD                             -->
+  <!-- ============================================== -->
+  <section style="margin-bottom: 96px;">
+
+    <div style="display:flex; align-items:baseline; gap:16px; margin-bottom: 24px;">
+      <h2 style="font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; margin:0; letter-spacing:-0.01em;">02 · MilestoneCard</h2>
+      <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">// status · title · stats · insight · sources</span>
+    </div>
+
+    <!-- Props snippet -->
+    <pre style="background:#131313; border:1px solid rgba(255,255,255,0.08); padding: 20px 24px; font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; line-height:1.6; margin: 0 0 32px; white-space:pre; overflow-x:auto;"><span style="color:#6b6b6b;">// MilestoneCard.tsx</span>
+<span style="color:#c5e84d;">interface</span> <span style="color:#f5f5f5;">MilestoneCardProps</span> { milestone: <span style="color:#a3a3a3;">Milestone</span> }
+
+<span style="color:#6b6b6b;">// reads: status, title, date, summary, stats[], insight, category, region, source</span>
+<span style="color:#6b6b6b;">// derives: relativeTime(date) — recomputed on mount, no live tick needed at card level</span></pre>
+
+    <!-- ---- CARD 1 · MET ---- -->
+    <div style="border:1px solid rgba(255,255,255,0.08); background:#131313; padding: 32px; margin-bottom: 16px;">
+      <!-- Header -->
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; gap: 24px;">
+        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(16,185,129,0.12); color:#10b981; border:1px solid rgba(16,185,129,0.25); padding: 6px 12px; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; flex-shrink:0;">
+          <span style="width:6px; height:6px; background:#10b981;"></span>Met
+        </span>
+        <div style="text-align:right; font-family:'Geist Mono', monospace; font-size:14px;">
+          <div style="color:#f5f5f5; letter-spacing:0.04em;">04 AUG 2024</div>
+          <div style="color:#6b6b6b; margin-top: 4px;">{{ m1Relative }}</div>
+        </div>
+      </div>
+
+      <!-- Title -->
+      <h3 style="font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:500; color:#f5f5f5; margin: 0 0 16px; line-height:1.15; letter-spacing:-0.01em; max-width: 60ch;">EU Methane Regulation enters force</h3>
+
+      <!-- Summary -->
+      <p style="font-family:'Geist', sans-serif; font-size:16px; line-height:1.55; color:#a3a3a3; margin: 0 0 32px; max-width: 72ch;">Binding rules on energy-sector methane emissions across all 27 member states, covering oil, gas, and coal infrastructure with mandatory leak detection and quarterly reporting.</p>
+
+      <!-- Stats grid -->
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
+        <div style="padding: 20px 24px 20px 0; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Member states</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">27</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">100% coverage</div>
+        </div>
+        <div style="padding: 20px 24px; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Sectors</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">3</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">oil · gas · coal</div>
+        </div>
+        <div style="padding: 20px 0 20px 24px;">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Baseline cut</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">30%</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">by 2030 vs 2020</div>
+        </div>
+      </div>
+
+      <!-- Insight callout -->
+      <div style="border-left: 2px solid #c5e84d; padding: 4px 0 4px 20px; margin-bottom: 28px;">
+        <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#c5e84d; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Insight</div>
+        <div style="font-family:'Geist', sans-serif; font-size:16px; color:#f5f5f5; line-height:1.5; max-width: 72ch;">First binding methane law globally — sets precedent cited in the 2025 G20 implementation framework.</div>
+      </div>
+
+      <!-- Footer -->
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 20px; border-top:1px solid rgba(255,255,255,0.08); gap: 16px; flex-wrap:wrap;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">methane</span>
+          <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">EU-27</span>
+        </div>
+        <a href="#" style="color:#c5e84d; text-decoration:none; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; display:inline-flex; align-items:center; gap:6px; border-bottom:1px solid rgba(197,232,77,0.4); padding-bottom:2px;">
+          Regulation (EU) 2024/1787 <span style="font-family:'Geist Mono', monospace;">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ---- CARD 2 · MISSED ---- -->
+    <div style="border:1px solid rgba(255,255,255,0.08); background:#131313; padding: 32px; margin-bottom: 16px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; gap: 24px;">
+        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(239,68,68,0.12); color:#ef4444; border:1px solid rgba(239,68,68,0.25); padding: 6px 12px; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; flex-shrink:0;">
+          <span style="width:6px; height:6px; background:#ef4444;"></span>Missed
+        </span>
+        <div style="text-align:right; font-family:'Geist Mono', monospace; font-size:14px;">
+          <div style="color:#f5f5f5; letter-spacing:0.04em;">30 NOV 2025</div>
+          <div style="color:#6b6b6b; margin-top: 4px;">{{ m2Relative }}</div>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:500; color:#f5f5f5; margin: 0 0 16px; line-height:1.15; letter-spacing:-0.01em; max-width: 60ch;">COP26 deforestation interim assessment</h3>
+
+      <p style="font-family:'Geist', sans-serif; font-size:16px; line-height:1.55; color:#a3a3a3; margin: 0 0 32px; max-width: 72ch;">Four-year checkpoint against the Glasgow Leaders' Declaration commitment to halt and reverse forest loss by 2030. Net trajectory tracked against 2020 baseline.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
+        <div style="padding: 20px 24px 20px 0; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Signatories</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">145</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">91% of forest area</div>
+        </div>
+        <div style="padding: 20px 24px; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">2024 loss</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#ef4444; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">6.4 Mha</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">+4% vs 2021</div>
+        </div>
+        <div style="padding: 20px 0 20px 24px;">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Funding gap</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">$18B</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">pledged vs disbursed</div>
+        </div>
+      </div>
+
+      <div style="border-left: 2px solid #c5e84d; padding: 4px 0 4px 20px; margin-bottom: 28px;">
+        <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#c5e84d; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Insight</div>
+        <div style="font-family:'Geist', sans-serif; font-size:16px; color:#f5f5f5; line-height:1.5; max-width: 72ch;">Brazil and Indonesia recovered against 2021 highs; the Congo Basin deteriorated. Net global trajectory off-pace by 17% — 2030 target now improbable without immediate financing.</div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 20px; border-top:1px solid rgba(255,255,255,0.08); gap: 16px; flex-wrap:wrap;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">deforestation</span>
+          <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">global</span>
+        </div>
+        <a href="#" style="color:#c5e84d; text-decoration:none; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; display:inline-flex; align-items:center; gap:6px; border-bottom:1px solid rgba(197,232,77,0.4); padding-bottom:2px;">
+          Forest Declaration Assessment 2024 <span style="font-family:'Geist Mono', monospace;">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- ---- CARD 3 · AT RISK ---- -->
+    <div style="border:1px solid rgba(255,255,255,0.08); background:#131313; padding: 32px;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; gap: 24px;">
+        <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(245,158,11,0.12); color:#f59e0b; border:1px solid rgba(245,158,11,0.25); padding: 6px 12px; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; flex-shrink:0;">
+          <span style="width:6px; height:6px; background:#f59e0b;"></span>At risk
+        </span>
+        <div style="text-align:right; font-family:'Geist Mono', monospace; font-size:14px;">
+          <div style="color:#f5f5f5; letter-spacing:0.04em;">14 MAR 2027</div>
+          <div style="color:#6b6b6b; margin-top: 4px;">{{ m3Relative }}</div>
+        </div>
+      </div>
+
+      <h3 style="font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:500; color:#f5f5f5; margin: 0 0 16px; line-height:1.15; letter-spacing:-0.01em; max-width: 60ch;">US Inflation Reduction Act — EV credit review</h3>
+
+      <p style="font-family:'Geist', sans-serif; font-size:16px; line-height:1.55; color:#a3a3a3; margin: 0 0 32px; max-width: 72ch;">Mandatory three-year statutory review of $7,500 EV tax credit eligibility under 26 CFR §30D, including domestic content thresholds and battery sourcing rules.</p>
+
+      <div style="display:grid; grid-template-columns: repeat(3, 1fr); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
+        <div style="padding: 20px 24px 20px 0; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Vehicles affected</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">1.8M</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">projected 2026 sales</div>
+        </div>
+        <div style="padding: 20px 24px; border-right:1px solid rgba(255,255,255,0.08);">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Adoption impact</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f59e0b; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">−12%</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">if credits removed</div>
+        </div>
+        <div style="padding: 20px 0 20px 24px;">
+          <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Industry exposure</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">$94B</div>
+          <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">capex committed</div>
+        </div>
+      </div>
+
+      <div style="border-left: 2px solid #c5e84d; padding: 4px 0 4px 20px; margin-bottom: 28px;">
+        <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#c5e84d; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Insight</div>
+        <div style="font-family:'Geist', sans-serif; font-size:16px; color:#f5f5f5; line-height:1.5; max-width: 72ch;">Congressional rollback signals intensifying; OEM lobbying — Ford, GM, Hyundai — pushing for phased grandfathering rather than full repeal.</div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 20px; border-top:1px solid rgba(255,255,255,0.08); gap: 16px; flex-wrap:wrap;">
+        <div style="display:flex; gap:8px; flex-wrap:wrap;">
+          <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">transport</span>
+          <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">US</span>
+        </div>
+        <a href="#" style="color:#c5e84d; text-decoration:none; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; display:inline-flex; align-items:center; gap:6px; border-bottom:1px solid rgba(197,232,77,0.4); padding-bottom:2px;">
+          DOE / Treasury 26 CFR §30D <span style="font-family:'Geist Mono', monospace;">↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Notes -->
+    <div style="margin-top: 16px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; display:flex; gap: 32px; flex-wrap:wrap;">
+      <span>// card · <span style="color:#a3a3a3;">border border-white/8 bg-neutral-900 p-8</span></span>
+      <span>// stat value · <span style="color:#a3a3a3;">font-mono text-4xl tracking-tight</span></span>
+      <span>// insight · <span style="color:#a3a3a3;">border-l-2 border-lime-400 pl-5</span></span>
+    </div>
+  </section>
+
+  <!-- ============================================== -->
+  <!-- 03 · ERA SECTION                                -->
+  <!-- ============================================== -->
+  <section style="margin-bottom: 96px;">
+
+    <div style="display:flex; align-items:baseline; gap:16px; margin-bottom: 24px;">
+      <h2 style="font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; margin:0; letter-spacing:-0.01em;">03 · EraSection</h2>
+      <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">// era header · descriptor · stack of MilestoneCards</span>
+    </div>
+
+    <!-- Props snippet -->
+    <pre style="background:#131313; border:1px solid rgba(255,255,255,0.08); padding: 20px 24px; font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; line-height:1.6; margin: 0 0 32px; white-space:pre; overflow-x:auto;"><span style="color:#6b6b6b;">// EraSection.tsx</span>
+<span style="color:#c5e84d;">interface</span> <span style="color:#f5f5f5;">EraSectionProps</span> {
+  era: <span style="color:#a3a3a3;">"past" | "now" | "crunch" | "beyond"</span>;
+  yearRange: <span style="color:#a3a3a3;">string</span>;        <span style="color:#6b6b6b;">// "2025 — 2030"</span>
+  title: <span style="color:#a3a3a3;">string</span>;
+  descriptor: <span style="color:#a3a3a3;">string</span>;
+  milestones: <span style="color:#a3a3a3;">Milestone[]</span>;
+}
+
+<span style="color:#6b6b6b;">// era color map (label + 2px accent line):</span>
+<span style="color:#6b6b6b;">// past  → text-neutral-500   line: white/8</span>
+<span style="color:#6b6b6b;">// now   → text-neutral-100   line: white/30</span>
+<span style="color:#6b6b6b;">// crunch→ text-lime-400      line: #c5e84d   ← the active urgent era</span>
+<span style="color:#6b6b6b;">// beyond→ text-neutral-400   line: white/15</span></pre>
+
+    <!-- ========= ERA: CRUNCH (full example) ========= -->
+    <div style="margin-bottom: 48px;">
+
+      <!-- Era header -->
+      <div style="border-bottom: 2px solid #c5e84d; padding-bottom: 24px; margin-bottom: 24px; display:flex; justify-content:space-between; align-items:flex-end; gap: 32px;">
+        <div style="flex: 1;">
+          <div style="display:flex; align-items:center; gap:12px; margin-bottom: 16px;">
+            <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#c5e84d; letter-spacing:0.12em; text-transform:uppercase; font-weight:500;">Era · Crunch</span>
+            <span style="width: 32px; height:1px; background:rgba(255,255,255,0.20);"></span>
+            <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">2025 — 2030</span>
+          </div>
+          <h2 style="font-family:'Space Grotesk', sans-serif; font-size:40px; font-weight:600; color:#f5f5f5; margin: 0; line-height:1.05; letter-spacing:-0.02em;">The decisive decade closes.</h2>
+          <p style="font-family:'Geist', sans-serif; font-size:16px; color:#a3a3a3; margin: 14px 0 0; max-width: 68ch; line-height:1.5;">Every binding commitment hinges on this period. Targets ratified before 2024 must demonstrate trajectory now — what slips here cannot be recovered in time.</p>
+        </div>
+        <div style="text-align:right; font-family:'Geist Mono', monospace; flex-shrink:0;">
+          <div style="font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Milestones</div>
+          <div style="font-family:'Geist Mono', monospace; font-size:48px; color:#f5f5f5; font-weight:500; line-height:1; letter-spacing:-0.03em;">31</div>
+        </div>
+      </div>
+
+      <!-- Stack of cards -->
+      <!-- Card A · upcoming -->
+      <div style="border:1px solid rgba(255,255,255,0.08); background:#131313; padding: 32px; margin-bottom: 16px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; gap: 24px;">
+          <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(197,232,77,0.12); color:#c5e84d; border:1px solid rgba(197,232,77,0.30); padding: 6px 12px; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; flex-shrink:0;">
+            <span style="width:6px; height:6px; background:#c5e84d;"></span>Upcoming
+          </span>
+          <div style="text-align:right; font-family:'Geist Mono', monospace; font-size:14px;">
+            <div style="color:#f5f5f5; letter-spacing:0.04em;">01 JAN 2028</div>
+            <div style="color:#6b6b6b; margin-top: 4px;">{{ m4Relative }}</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:500; color:#f5f5f5; margin: 0 0 16px; line-height:1.15; letter-spacing:-0.01em; max-width: 60ch;">EU heavy-truck CO₂ standards take effect</h3>
+
+        <p style="font-family:'Geist', sans-serif; font-size:16px; line-height:1.55; color:#a3a3a3; margin: 0 0 32px; max-width: 72ch;">First binding emissions standards for new heavy-duty vehicles in the EU. Manufacturer-level fleet averages, escalating cuts through 2030 and 2035.</p>
+
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
+          <div style="padding: 20px 24px 20px 0; border-right:1px solid rgba(255,255,255,0.08);">
+            <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Required cut</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">−45%</div>
+            <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">by 2030 vs 2019</div>
+          </div>
+          <div style="padding: 20px 24px; border-right:1px solid rgba(255,255,255,0.08);">
+            <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Manufacturers</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">6</div>
+            <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">in scope</div>
+          </div>
+          <div style="padding: 20px 0 20px 24px;">
+            <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Compliance risk</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">€2.4B</div>
+            <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">cumulative fines</div>
+          </div>
+        </div>
+
+        <div style="border-left: 2px solid #c5e84d; padding: 4px 0 4px 20px; margin-bottom: 28px;">
+          <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#c5e84d; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Insight</div>
+          <div style="font-family:'Geist', sans-serif; font-size:16px; color:#f5f5f5; line-height:1.5; max-width: 72ch;">Volvo and Daimler ahead of curve via electrified launches; Iveco and Scania face the steepest residual gap.</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 20px; border-top:1px solid rgba(255,255,255,0.08); gap: 16px; flex-wrap:wrap;">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">transport</span>
+            <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">EU-27</span>
+          </div>
+          <a href="#" style="color:#c5e84d; text-decoration:none; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; display:inline-flex; align-items:center; gap:6px; border-bottom:1px solid rgba(197,232,77,0.4); padding-bottom:2px;">
+            Regulation (EU) 2024/1610 <span style="font-family:'Geist Mono', monospace;">↗</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Card B · upcoming · renewables -->
+      <div style="border:1px solid rgba(255,255,255,0.08); background:#131313; padding: 32px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom: 24px; gap: 24px;">
+          <span style="display:inline-flex; align-items:center; gap:8px; background:rgba(197,232,77,0.12); color:#c5e84d; border:1px solid rgba(197,232,77,0.30); padding: 6px 12px; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; flex-shrink:0;">
+            <span style="width:6px; height:6px; background:#c5e84d;"></span>Upcoming
+          </span>
+          <div style="text-align:right; font-family:'Geist Mono', monospace; font-size:14px;">
+            <div style="color:#f5f5f5; letter-spacing:0.04em;">31 DEC 2030</div>
+            <div style="color:#6b6b6b; margin-top: 4px;">{{ m5Relative }}</div>
+          </div>
+        </div>
+
+        <h3 style="font-family:'Space Grotesk', sans-serif; font-size:28px; font-weight:500; color:#f5f5f5; margin: 0 0 16px; line-height:1.15; letter-spacing:-0.01em; max-width: 60ch;">Triple global renewable capacity (COP28)</h3>
+
+        <p style="font-family:'Geist', sans-serif; font-size:16px; line-height:1.55; color:#a3a3a3; margin: 0 0 32px; max-width: 72ch;">Global pledge to triple installed renewable capacity and double energy efficiency improvements by 2030, ratified by 130+ nations at COP28 Dubai.</p>
+
+        <div style="display:grid; grid-template-columns: repeat(3, 1fr); border-top:1px solid rgba(255,255,255,0.08); border-bottom:1px solid rgba(255,255,255,0.08); margin-bottom: 24px;">
+          <div style="padding: 20px 24px 20px 0; border-right:1px solid rgba(255,255,255,0.08);">
+            <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Today</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f5f5f5; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">4,210</div>
+            <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">GW installed</div>
+          </div>
+          <div style="padding: 20px 24px; border-right:1px solid rgba(255,255,255,0.08);">
+            <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Target</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#c5e84d; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">11,000</div>
+            <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">GW by 2030</div>
+          </div>
+          <div style="padding: 20px 0 20px 24px;">
+            <div style="font-family:'Geist', sans-serif; font-size:14px; font-weight:500; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">YoY needed</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:36px; font-weight:500; color:#f59e0b; line-height:1.1; margin: 8px 0 4px; letter-spacing:-0.02em;">+17%</div>
+            <div style="font-family:'Geist', sans-serif; font-size:14px; color:#6b6b6b;">vs 11% current</div>
+          </div>
+        </div>
+
+        <div style="border-left: 2px solid #c5e84d; padding: 4px 0 4px 20px; margin-bottom: 28px;">
+          <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#c5e84d; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Insight</div>
+          <div style="font-family:'Geist', sans-serif; font-size:16px; color:#f5f5f5; line-height:1.5; max-width: 72ch;">China alone accounts for 64% of net additions since 2023. Grid interconnect and permitting — not panels — are the binding constraint in OECD markets.</div>
+        </div>
+
+        <div style="display:flex; justify-content:space-between; align-items:center; padding-top: 20px; border-top:1px solid rgba(255,255,255,0.08); gap: 16px; flex-wrap:wrap;">
+          <div style="display:flex; gap:8px; flex-wrap:wrap;">
+            <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">renewables</span>
+            <span style="background:#0a0a0a; color:#a3a3a3; border:1px solid rgba(255,255,255,0.08); padding: 6px 10px; font-family:'Geist Mono', monospace; font-size:14px;">global</span>
+          </div>
+          <a href="#" style="color:#c5e84d; text-decoration:none; font-family:'Geist', sans-serif; font-size:14px; font-weight:500; display:inline-flex; align-items:center; gap:6px; border-bottom:1px solid rgba(197,232,77,0.4); padding-bottom:2px;">
+            IEA Renewables 2024 Outlook <span style="font-family:'Geist Mono', monospace;">↗</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========= ERA HEADER VARIANTS ========= -->
+    <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase; margin: 64px 0 20px;">Era header variants — past / now / beyond</div>
+
+    <div style="display:flex; flex-direction:column; gap: 32px;">
+
+      <!-- PAST -->
+      <div>
+        <div style="border-bottom: 1px solid rgba(255,255,255,0.08); padding-bottom: 20px; display:flex; justify-content:space-between; align-items:flex-end; gap: 32px;">
+          <div style="flex: 1;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
+              <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; letter-spacing:0.12em; text-transform:uppercase; font-weight:500;">Era · Past</span>
+              <span style="width: 32px; height:1px; background:rgba(255,255,255,0.10);"></span>
+              <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">Pre — 2024</span>
+            </div>
+            <h2 style="font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; color:#a3a3a3; margin: 0; line-height:1.05; letter-spacing:-0.02em;">What was promised.</h2>
+            <p style="font-family:'Geist', sans-serif; font-size:16px; color:#6b6b6b; margin: 12px 0 0; max-width: 60ch; line-height:1.5;">Treaties signed and commitments ratified before the tracker's reference baseline.</p>
+          </div>
+          <div style="text-align:right; font-family:'Geist Mono', monospace;">
+            <div style="font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Milestones</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:40px; color:#a3a3a3; font-weight:500; line-height:1; letter-spacing:-0.03em;">22</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NOW -->
+      <div>
+        <div style="border-bottom: 1px solid rgba(255,255,255,0.20); padding-bottom: 20px; display:flex; justify-content:space-between; align-items:flex-end; gap: 32px;">
+          <div style="flex: 1;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
+              <span style="width:8px; height:8px; background:#f5f5f5; display:inline-block;"></span>
+              <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#f5f5f5; letter-spacing:0.12em; text-transform:uppercase; font-weight:500;">Era · Now</span>
+              <span style="width: 32px; height:1px; background:rgba(255,255,255,0.20);"></span>
+              <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; letter-spacing:0.08em; text-transform:uppercase;">2024 — 2025</span>
+            </div>
+            <h2 style="font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; color:#f5f5f5; margin: 0; line-height:1.05; letter-spacing:-0.02em;">What is in motion.</h2>
+            <p style="font-family:'Geist', sans-serif; font-size:16px; color:#a3a3a3; margin: 12px 0 0; max-width: 60ch; line-height:1.5;">Live deadlines tracked against current-quarter implementation data.</p>
+          </div>
+          <div style="text-align:right; font-family:'Geist Mono', monospace;">
+            <div style="font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Milestones</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:40px; color:#f5f5f5; font-weight:500; line-height:1; letter-spacing:-0.03em;">12</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BEYOND -->
+      <div>
+        <div style="border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 20px; display:flex; justify-content:space-between; align-items:flex-end; gap: 32px;">
+          <div style="flex: 1;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom: 12px;">
+              <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#a3a3a3; letter-spacing:0.12em; text-transform:uppercase; font-weight:500;">Era · Beyond</span>
+              <span style="width: 32px; height:1px; background:rgba(255,255,255,0.15);"></span>
+              <span style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">2031 — 2050</span>
+            </div>
+            <h2 style="font-family:'Space Grotesk', sans-serif; font-size:32px; font-weight:600; color:#f5f5f5; margin: 0; line-height:1.05; letter-spacing:-0.02em;">What comes after.</h2>
+            <p style="font-family:'Geist', sans-serif; font-size:16px; color:#a3a3a3; margin: 12px 0 0; max-width: 60ch; line-height:1.5;">Net-zero target dates and long-horizon commitments past the 1.5°C deadline.</p>
+          </div>
+          <div style="text-align:right; font-family:'Geist Mono', monospace;">
+            <div style="font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase; margin-bottom: 8px;">Milestones</div>
+            <div style="font-family:'Geist Mono', monospace; font-size:40px; color:#f5f5f5; font-weight:500; line-height:1; letter-spacing:-0.03em;">11</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Notes -->
+    <div style="margin-top: 24px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; display:flex; gap: 32px; flex-wrap:wrap;">
+      <span>// era label · <span style="color:#a3a3a3;">tracking-[0.12em] uppercase text-sm</span></span>
+      <span>// crunch only · <span style="color:#a3a3a3;">border-b-2 border-lime-400</span></span>
+      <span>// cards · <span style="color:#a3a3a3;">space-y-4</span></span>
+    </div>
+  </section>
+
+  <!-- ============ FOOTER ============ -->
+  <footer style="border-top:1px solid rgba(255,255,255,0.08); padding-top: 32px; display:flex; justify-content:space-between; align-items:center;">
+    <div style="font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b; letter-spacing:0.08em; text-transform:uppercase;">End of components · 3 of 3 ready for handoff</div>
+    <div style="display:flex; align-items:center; gap:8px; font-family:'Geist Mono', monospace; font-size:14px; color:#6b6b6b;">
+      <span style="width:6px; height:6px; background:#c5e84d;"></span>
+      <span>ship to claude code</span>
+    </div>
+  </footer>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { tick: 0 };
+
+  componentDidMount() {
+    this.timer = setInterval(() => {
+      this.setState({ tick: this.state.tick + 1 });
+    }, 60000);
+  }
+
+  componentWillUnmount() {
+    if (this.timer) clearInterval(this.timer);
+  }
+
+  daysUntil(dateStr) {
+    const target = new Date(dateStr + 'T00:00:00');
+    const now = new Date();
+    return Math.ceil((target - now) / 86400000);
+  }
+
+  relativeTime(dateStr) {
+    const d = this.daysUntil(dateStr);
+    if (d === 0) return 'today';
+    if (d < 0) {
+      const abs = -d;
+      if (abs < 30) return `${abs} days ago`;
+      if (abs < 365) return `${Math.round(abs / 30)} months ago`;
+      return `${(abs / 365).toFixed(1)} years ago`;
+    }
+    if (d < 30) return `in ${d} days`;
+    if (d < 365) return `in ${Math.round(d / 30)} months`;
+    return `in ${(d / 365).toFixed(1)} years`;
+  }
+
+  renderVals() {
+    const days = this.daysUntil('2030-12-31');
+    return {
+      daysToTarget: days.toLocaleString('en-US'),
+      m1Relative: this.relativeTime('2024-08-04'),
+      m2Relative: this.relativeTime('2025-11-30'),
+      m3Relative: this.relativeTime('2027-03-14'),
+      m4Relative: this.relativeTime('2028-01-01'),
+      m5Relative: this.relativeTime('2030-12-31'),
+    };
+  }
+}
+</script>
+</body>
+</html>
